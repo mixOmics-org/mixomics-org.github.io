@@ -3,16 +3,33 @@ name: Build guides index
 # Regenerates the guides list on the landing page from repositories tagged with
 # the topic `mixomics-guide` that have Pages enabled.
 #
-# Triggers:
-#   schedule            — daily, catches new guides without anyone remembering
-#   workflow_dispatch   — run it by hand from the Actions tab
-#   repository_dispatch — a guide repo can notify this one on publish:
+# Triggers, in order of how you will actually use them:
+#
+#   repository_dispatch — INSTANT. The intended path when publishing a guide:
 #       gh api repos/mixOmics-org/mixomics-org.github.io/dispatches \
 #         -f event_type=guide-published
+#
+#   workflow_dispatch   — on demand, from the Actions tab or:
+#       gh workflow run build-index.yml -R mixOmics-org/mixomics-org.github.io
+#
+#   schedule            — hourly safety net, so a forgotten dispatch costs at
+#                         most an hour rather than a day
+#
+#   push                — when the generator or this workflow changes
+#
+# Why :17 and not :00 — GitHub delays scheduled runs during high load, and the
+# top of the hour is the peak. Their own guidance is to pick a different minute.
+# Scheduled workflows are free on public repositories, and the job exits without
+# committing when nothing changed, so an hourly cadence costs nothing and adds
+# no commit noise.
+#
+# Note: GitHub disables scheduled workflows in a repository with no activity for
+# 60 days. Not a concern while the site is being worked on; worth knowing if it
+# ever goes quiet.
 
 on:
   schedule:
-    - cron: "17 19 * * *"      # 05:17 AEST / 06:17 AEDT — after the working day
+    - cron: "17 * * * *"       # hourly at :17 — see the note above on :00
   workflow_dispatch:
   repository_dispatch:
     types: [guide-published]
