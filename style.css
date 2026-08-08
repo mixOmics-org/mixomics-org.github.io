@@ -1,0 +1,622 @@
+/* ============================================================================
+   mixOmics Guides — guides.mixomics.org
+   ============================================================================
+
+   TOKENS
+     Three anchors — small 20rem (320px), medium 48rem (768px), large 80rem
+     (1280px) — with TWO interpolation segments rather than one straight line.
+     Segment A runs s→m in :root; segment B runs m→l and is redefined inside a
+     single container query. Below s and above l the clamps hold flat.
+
+     All clamps use `cqi`, never `vw`. `.page` is the query container AND
+     carries the width cap, so 1cqi = 1% of the content column. If the
+     container were full-width, cqi would equal vw and the cap would do
+     nothing for the scale.
+
+   UNITS
+     rem for everything sized against the document; em for anything that must
+     track its own font-size (icons, pill padding); ch for measure. The only
+     px values are hairlines inside gradients where sub-pixel rem rounding
+     causes seams.
+
+   NAMING
+     BEM. block, block__element, block--modifier. No element selectors carry
+     visual style except the reset, so specificity stays flat at 0-1-0.
+
+   OVERRIDE POINTS
+     Change --measure, --logo-max, --guide-min, --radius, --scrollbar-*, or
+     any --fs-* / --sp-* token. Nothing below the token blocks hardcodes a size.
+   ========================================================================= */
+
+/* ==========================================================================
+   1. TOKENS
+   ========================================================================== */
+
+:root {
+  /* --- viewport anchors (documentation; clamps are pre-computed) --------- */
+  --vp-s: 20rem;    /*  320px */
+  --vp-m: 48rem;    /*  768px */
+  --vp-l: 80rem;    /* 1280px */
+
+  /* --- colour ----------------------------------------------------------- */
+  --c-bg:        #232A34;
+  --c-surface:   #1B222B;
+  --c-surface-2: #1F2833;
+  --c-line:      #2E3742;
+  --c-brand:     #F5A623;
+  --c-brand-2:   #26A69A;
+  --c-brand-3:   #8E6BC9;
+  --c-fg:        #E8EDF2;
+  --c-fg-muted:  #9AA7B8;
+  --c-fg-faint:  #6B7A8F;
+
+  /* --- type: segment A, 320→768 ----------------------------------------- */
+  --fs-n2:      clamp(0.6944rem, 0.6847rem + 0.04855cqi, 0.708rem);
+  --fs-n1:      clamp(0.8333rem, 0.809rem  + 0.1215cqi,  0.8673rem);
+  --fs-0:       clamp(1rem,      0.9554rem + 0.2232cqi,  1.062rem);
+  --fs-1:       clamp(1.2rem,    1.127rem  + 0.3627cqi,  1.302rem);
+  --fs-2:       clamp(1.44rem,   1.33rem   + 0.5515cqi,  1.594rem);
+  --fs-3:       clamp(1.728rem,  1.567rem  + 0.8041cqi,  1.953rem);
+  --fs-4:       clamp(2.074rem,  1.846rem  + 1.139cqi,   2.393rem);
+  --fs-display: clamp(1.625rem,  1.268rem  + 1.786cqi,   2.125rem);
+  --fs-page-title: clamp(2rem, 1.2857rem + 3.5714cqi, 3rem);
+
+  /* --- space: segment A -------------------------------------------------- */
+  --sp-3xs: clamp(0.25rem,   0.2277rem + 0.1116cqi, 0.2812rem);
+  --sp-2xs: clamp(0.5rem,    0.4554rem + 0.2232cqi, 0.5625rem);
+  --sp-xs:  clamp(0.75rem,   0.7054rem + 0.2232cqi, 0.8125rem);
+  --sp-s:   clamp(1rem,      0.9554rem + 0.2232cqi, 1.062rem);
+  --sp-m:   clamp(1.5rem,    1.411rem  + 0.4464cqi, 1.625rem);
+  --sp-l:   clamp(2rem,      1.866rem  + 0.6696cqi, 2.188rem);
+  --sp-xl:  clamp(3rem,      2.821rem  + 0.8929cqi, 3.25rem);
+  --sp-2xl: clamp(4rem,      3.732rem  + 1.339cqi,  4.375rem);
+  --sp-3xl: clamp(6rem,      5.643rem  + 1.786cqi,  6.5rem);
+
+  /* --- type faces -------------------------------------------------------- */
+  --ff-sans: "Montserrat", -apple-system, BlinkMacSystemFont, "Segoe UI",
+             Roboto, Helvetica, Arial, sans-serif;
+  --ff-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas,
+             "Liberation Mono", monospace;
+
+  --lh-tight: 1.1;
+  --lh-snug:  1.35;
+  --lh-body:  1.6;
+  --lh-loose: 1.75;
+
+  --fw-regular: 400;
+  --fw-medium:  500;
+  --fw-semi:    600;
+  --fw-bold:    700;
+
+  --ls-tight: -0.025em;
+  --ls-wide:   0.08em;
+  --ls-wider:  0.12em;
+
+  /* --- layout ------------------------------------------------------------ */
+  --measure:     80rem;   /* content column cap; also the cqi basis */
+  --measure-min: 20rem;   /* narrowest supported column */
+  --prose:       70ch;    /* running-text measure */
+  --prose-tight: 56ch;    /* lede / card notes */
+  --logo-max:    32rem;   /* raise to 40rem for the full 640px asset */
+  --guide-min:   26rem;   /* card min before the grid drops a column */
+
+  /* --- form -------------------------------------------------------------- */
+  --radius:    0.75rem;
+  --radius-sm: 0.5rem;
+  --radius-pill: 62.4375rem;
+  --rule:      0.0625rem;  /* 1px hairline */
+  --rule-2:    0.09375rem; /* 1.5px */
+  --tap:       2.75rem;    /* 44px minimum target */
+
+  /* --- motion ------------------------------------------------------------ */
+  --ease: cubic-bezier(.2, .7, .3, 1);
+  --dur-fast: .18s;
+  --dur:      .22s;
+  --dur-slow: 4.5s;
+
+  /* --- scrollbar --------------------------------------------------------- */
+  --scrollbar-size:  0.75rem;
+  --scrollbar-track: var(--c-surface);
+  --scrollbar-thumb: var(--c-brand);
+  --scrollbar-thumb-hover: #FFB93E;
+}
+
+/* --- segment B: 768→1280. Redefining the same custom properties inside one
+   container query gives a second interpolation slope without any layout
+   living in a breakpoint. --------------------------------------------------- */
+@container page (min-width: 48rem) {
+  .page > * {
+    --fs-n2:      clamp(0.708rem,  0.6901rem + 0.03738cqi, 0.72rem);
+    --fs-n1:      clamp(0.8673rem, 0.8184rem + 0.102cqi,   0.9rem);
+    --fs-0:       clamp(1.062rem,  0.9688rem + 0.1953cqi,  1.125rem);
+    --fs-1:       clamp(1.302rem,  1.145rem  + 0.3271cqi,  1.406rem);
+    --fs-2:       clamp(1.594rem,  1.349rem  + 0.5106cqi,  1.758rem);
+    --fs-3:       clamp(1.953rem,  1.587rem  + 0.7628cqi,  2.197rem);
+    --fs-4:       clamp(2.393rem,  1.862rem  + 1.106cqi,   2.747rem);
+    --fs-display: clamp(2.125rem,  1.188rem  + 1.953cqi,   2.75rem);
+    --fs-page-title: clamp(3rem, 1.5rem + 3.125cqi, 4rem);
+    
+    --sp-3xs: clamp(0.2812rem, 0.2344rem + 0.09766cqi, 0.3125rem);
+    --sp-2xs: clamp(0.5625rem, 0.4688rem + 0.1953cqi,  0.625rem);
+    --sp-xs:  clamp(0.8125rem, 0.7188rem + 0.1953cqi,  0.875rem);
+    --sp-s:   clamp(1.062rem,  0.9688rem + 0.1953cqi,  1.125rem);
+    --sp-m:   clamp(1.625rem,  1.438rem  + 0.3906cqi,  1.75rem);
+    --sp-l:   clamp(2.188rem,  1.906rem  + 0.5859cqi,  2.375rem);
+    --sp-xl:  clamp(3.25rem,   2.875rem  + 0.7812cqi,  3.5rem);
+    --sp-2xl: clamp(4.375rem,  3.812rem  + 1.172cqi,   4.75rem);
+    --sp-3xl: clamp(6.5rem,    5.75rem   + 1.562cqi,   7rem);
+  }
+}
+
+@property --sheen {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+/* ==========================================================================
+   2. RESET
+   ========================================================================== */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scrollbar-gutter: stable;               /* no layout shift when it appears */
+  scrollbar-width: thin;                  /* Firefox + modern Chromium */
+  scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+  color-scheme: dark;
+}
+
+::-webkit-scrollbar { width: var(--scrollbar-size); height: var(--scrollbar-size); }
+::-webkit-scrollbar-track { background: var(--scrollbar-track); }
+::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb);
+  border: 0.1875rem solid var(--scrollbar-track);
+  border-radius: var(--radius-pill);
+}
+::-webkit-scrollbar-thumb:hover { background: var(--scrollbar-thumb-hover); }
+::-webkit-scrollbar-corner { background: var(--scrollbar-track); }
+
+body {
+  margin: 0;
+  min-height: 100svh;
+  background: var(--c-bg);
+  color: var(--c-fg);
+  font-family: var(--ff-sans);
+  font-size: var(--fs-0);
+  font-weight: var(--fw-regular);
+  line-height: var(--lh-body);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+img, svg, video { display: block; max-width: 100%; height: auto; }
+
+::selection { background: var(--c-brand); color: var(--c-bg); }
+
+:where(a):focus-visible,
+:where(button):focus-visible {
+  outline: var(--rule-2) solid var(--c-brand);
+  outline-offset: 0.1875rem;
+}
+
+/* ==========================================================================
+   3. BLOCK: page  — the query container and the width cap
+   ========================================================================== */
+
+.page {
+  container-type: inline-size;
+  container-name: page;
+  max-width: var(--measure);
+  min-width: var(--measure-min);
+  margin-inline: auto;
+}
+
+.page__main {
+  padding-inline: clamp(1rem, 4cqi, var(--sp-2xl));
+  padding-block: var(--sp-2xl) var(--sp-3xl);
+}
+
+.page__section { margin-block: var(--sp-xl); }
+
+.page__eyebrow {
+  margin: 0 0 var(--sp-s);
+  color: var(--c-fg-faint);
+  font-size: var(--fs-n1);
+  font-weight: var(--fw-semi);
+  letter-spacing: var(--ls-wider);
+  text-transform: uppercase;
+}
+
+/* ==========================================================================
+   4. BLOCK: masthead
+   ========================================================================== */
+
+.masthead {
+  margin-bottom: var(--sp-2xl);
+  text-align: center;
+}
+
+.masthead__logo {
+  width: min(100%, clamp(18rem, 40cqi, var(--logo-max)));
+  aspect-ratio: 640 / 360;                /* reserves space before load */
+  margin: 0 auto var(--sp-m);
+}
+
+.masthead__title {
+  margin: 0 0 var(--sp-s);
+  font-size: var(--fs-page-title);
+  font-weight: var(--fw-regular);
+  letter-spacing: var(--ls-tight);
+  line-height: var(--lh-tight);
+  text-wrap: balance;
+}
+
+.masthead__accent { color: var(--c-brand); font-weight: var(--fw-medium);}
+
+.masthead__lede {
+  max-width: var(--prose-tight);
+  margin-inline: auto;
+  margin-block: 0;
+  color: var(--c-fg-muted);
+  font-size: var(--fs-0);
+  line-height: var(--lh-body);
+}
+
+/* ==========================================================================
+   5. BLOCK: guides  — the list
+   ========================================================================== */
+
+/* auto-fit collapses empty tracks: one card fills the column, more flow into
+   as many columns as fit. No breakpoint involved. */
+.guides {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--guide-min)), 1fr));
+  gap: var(--sp-s);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.guides__item {
+  display: grid;
+  /* inherit the row track so sibling cards match height */
+  grid-template-rows: subgrid;
+  grid-row: span 1;
+}
+
+/* ==========================================================================
+   6. BLOCK: guide  — a single card
+   ========================================================================== */
+
+.guide {
+  --guide-accent: var(--c-fg-faint);
+
+  position: relative;
+  display: grid;
+  grid-template-rows: auto auto 1fr;      /* type, title, note */
+  gap: var(--sp-3xs);
+  align-content: start;
+  padding: var(--sp-m);
+  padding-inline-start: calc(var(--sp-m) + var(--sp-3xs));
+  min-height: var(--tap);
+  border: var(--rule-2) solid transparent;
+  border-radius: var(--radius);
+  color: inherit;
+  text-decoration: none;
+
+  /* Gradient border via background-clip: fill to the padding box, border
+     colour to the border box. No pseudo-element, so nothing is trapped when
+     `transform` creates a stacking context on hover — which is exactly what
+     breaks the common ::after + z-index:-1 approach. */
+  background:
+    linear-gradient(var(--c-surface), var(--c-surface)) padding-box,
+    linear-gradient(var(--c-line), var(--c-line)) border-box;
+
+  transition: transform var(--dur) var(--ease),
+              box-shadow var(--dur) ease;
+}
+
+.guide::before {                          /* accent edge, visible at rest */
+  content: "";
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: 0;
+  inline-size: 0.1875rem;
+  border-radius: var(--radius-pill);
+  background: var(--guide-accent);
+  opacity: .9;
+  transition: opacity var(--dur) ease, inline-size var(--dur) ease;
+}
+
+.guide:hover,
+.guide:focus-visible {
+  transform: translateY(-0.125rem) scale(1.005);
+  box-shadow: 0 0.5rem 1.625rem -0.875rem
+              color-mix(in srgb, var(--guide-accent) 75%, transparent);
+  background:
+    linear-gradient(var(--c-surface-2), var(--c-surface-2)) padding-box,
+    conic-gradient(from var(--sheen),
+      transparent 0deg,   var(--guide-accent) 50deg,  transparent 125deg,
+      transparent 180deg, var(--guide-accent) 230deg, transparent 305deg) border-box;
+  animation: sheen var(--dur-slow) linear infinite;
+}
+
+.guide:hover::before,
+.guide:focus-visible::before { inline-size: 0.25rem; opacity: 1; }
+
+.guide:focus-visible { outline-color: var(--guide-accent); }
+
+@keyframes sheen { to { --sheen: 360deg; } }
+
+.guide--vignette  { --guide-accent: var(--c-brand); }
+.guide--tutorial  { --guide-accent: var(--c-brand-2); }
+.guide--reference { --guide-accent: var(--c-brand-3); }
+
+.guide__type {
+  justify-self: start;
+  margin-bottom: var(--sp-2xs);
+  padding: 0.15em 0.75em;                 /* em: tracks its own font-size */
+  border: var(--rule) solid
+          color-mix(in srgb, var(--guide-accent) 45%, transparent);
+  border-radius: var(--radius-pill);
+  color: var(--guide-accent);
+  font-size: var(--fs-n1);
+  font-weight: var(--fw-semi);
+  letter-spacing: var(--ls-wide);
+  line-height: 1.5;
+  text-transform: uppercase;
+}
+
+.guide__title {
+  font-size: var(--fs-1);
+  font-weight: var(--fw-semi);
+  letter-spacing: -0.01em;
+  line-height: var(--lh-snug);
+  text-wrap: balance;
+}
+
+.guide__note {
+  max-width: var(--prose-tight);
+  color: var(--c-fg-muted);
+  font-size: var(--fs-0);
+  line-height: var(--lh-body);
+}
+
+/* ==========================================================================
+   7. BLOCK: code
+   ========================================================================== */
+
+.code {
+  position: relative;
+  background: var(--c-surface);
+  border: var(--rule) solid var(--c-line);
+  border-radius: var(--radius);
+}
+
+.code__pre {
+  margin: 0;
+  padding: var(--sp-m);
+  padding-inline-end: calc(var(--tap) + var(--sp-s));
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  font-family: var(--ff-mono);
+  font-size: var(--fs-n1);
+  line-height: var(--lh-loose);
+  tab-size: 2;
+}
+
+.code__source { font: inherit; color: var(--c-fg); white-space: pre; }
+.code__comment { color: var(--c-fg-faint); }
+
+.code__copy {
+  position: absolute;
+  inset-block-start: var(--sp-2xs);
+  inset-inline-end: var(--sp-2xs);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: var(--tap);
+  block-size: var(--tap);
+  padding: 0;
+  background: transparent;
+  border: var(--rule) solid transparent;
+  border-radius: var(--radius-sm);
+  color: var(--c-fg-faint);
+  cursor: pointer;
+  transition: color var(--dur-fast) ease,
+              background-color var(--dur-fast) ease,
+              border-color var(--dur-fast) ease;
+}
+
+.code__copy:hover {
+  color: var(--c-fg);
+  background: var(--c-surface-2);
+  border-color: var(--c-line);
+}
+
+.code__icon { inline-size: 1.125em; block-size: 1.125em; }
+.code__icon--done { display: none; color: var(--c-brand-2); }
+
+.code__copy[data-state="copied"] { color: var(--c-brand-2); }
+.code__copy[data-state="copied"] .code__icon--copy { display: none; }
+.code__copy[data-state="copied"] .code__icon--done { display: block; }
+
+.code__status {
+  margin: var(--sp-2xs) 0 0;
+  min-block-size: 1.25em;
+  color: var(--c-brand-2);
+  font-size: var(--fs-n1);
+}
+
+/* ==========================================================================
+   8. BLOCK: site-footer
+   ========================================================================== */
+
+.site-footer {
+  margin-top: var(--sp-2xl);
+  padding-top: var(--sp-m);
+  border-top: var(--rule) solid var(--c-line);
+  color: var(--c-fg-faint);
+  font-size: var(--fs-n1);
+}
+
+.site-footer__nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2xs) var(--sp-m);
+  margin-bottom: var(--sp-s);
+}
+
+.site-footer__link {
+  padding-block: var(--sp-3xs);
+  border-bottom: var(--rule) solid transparent;
+  color: var(--c-fg-muted);
+  text-decoration: none;
+  transition: color var(--dur-fast) ease, border-color var(--dur-fast) ease;
+}
+
+.site-footer__link:hover {
+  color: var(--c-brand);
+  border-bottom-color: var(--c-brand);
+}
+
+/* No text-wrap:pretty and no &nbsp; in the markup — either one pins the line
+   break and makes it impossible to shift by resizing. */
+.site-footer__colophon {
+  max-width: var(--prose);
+  margin: 0;
+  line-height: var(--lh-loose);
+}
+
+/* ==========================================================================
+   9. BLOCK: social
+   ========================================================================== */
+
+.social {
+  display: flex;
+  gap: var(--sp-3xs);
+  margin: 0 0 var(--sp-s) calc(var(--sp-xs) * -1);
+  padding: 0;
+  list-style: none;
+}
+
+.social__item { display: flex; }
+
+.social__link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: var(--tap);
+  block-size: var(--tap);
+  border-radius: var(--radius-sm);
+  color: var(--c-fg-muted);
+  transition: color var(--dur-fast) ease, background-color var(--dur-fast) ease;
+}
+
+.social__link:hover { color: var(--c-brand); background: var(--c-surface); }
+.social__icon { inline-size: 1.25rem; block-size: 1.25rem; fill: currentColor; }
+
+/* ==========================================================================
+   10. BLOCK: error (404)
+   ========================================================================== */
+
+.error {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-block-size: 100svh;
+}
+
+.error__title {
+  margin: 0 0 var(--sp-2xs);
+  font-size: var(--fs-3);
+  font-weight: var(--fw-bold);
+  letter-spacing: var(--ls-tight);
+  line-height: var(--lh-tight);
+}
+
+.error__note {
+  margin: 0 0 var(--sp-m);
+  color: var(--c-fg-muted);
+  font-size: var(--fs-0);
+}
+
+.error__back {
+  align-self: start;
+  padding-block: var(--sp-3xs);
+  border-bottom: var(--rule) solid currentColor;
+  color: var(--c-brand);
+  text-decoration: none;
+}
+
+/* ==========================================================================
+   11. UTILITY
+   ========================================================================== */
+
+.u-visually-hidden {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+.u-skip-link {
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-start: 0;
+  z-index: 10;
+  padding: var(--sp-xs) var(--sp-m);
+  background: var(--c-brand);
+  color: var(--c-bg);
+  font-weight: var(--fw-semi);
+  border-radius: 0 0 var(--radius) 0;
+  /* hidden without a viewport offset — works in RTL and at any width */
+  transform: translateY(-100%);
+  transition: transform var(--dur-fast) var(--ease);
+}
+
+.u-skip-link:focus { transform: translateY(0); }
+
+/* ==========================================================================
+   12. USER PREFERENCES
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .guide:hover, .guide:focus-visible {
+    transform: none;
+    animation: none;
+    background:
+      linear-gradient(var(--c-surface-2), var(--c-surface-2)) padding-box,
+      linear-gradient(var(--guide-accent), var(--guide-accent)) border-box;
+  }
+}
+
+@media (prefers-contrast: more) {
+  :root {
+    --c-fg-muted: #C6D0DC;
+    --c-fg-faint: #9AA7B8;
+    --c-line:     #4A5666;
+  }
+  .guide::before { opacity: 1; }
+}
+
+@media print {
+  html { scrollbar-width: auto; }
+  body { background: #fff; color: #000; }
+  .social, .u-skip-link, .code__copy, .code__status { display: none; }
+  .guide, .code { border: var(--rule) solid #ccc; background: #fff; box-shadow: none; }
+  .site-footer__link::after { content: " (" attr(href) ")"; font-size: .8em; color: #555; }
+}
