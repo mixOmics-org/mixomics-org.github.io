@@ -1,0 +1,113 @@
+# https://guides.mixomics.org/robots.txt
+#
+# Policy: search indexing is welcome. Training crawlers are not.
+#
+# robots.txt is advisory — it is honoured voluntarily. The operators below
+# publish that they respect it, but nothing here enforces anything. Real
+# enforcement needs a WAF rule at the edge; see README.md.
+
+# --- AI training and content-ingestion crawlers: denied -------------------
+User-agent: GPTBot
+Disallow: /
+
+User-agent: OAI-SearchBot
+Disallow: /
+
+User-agent: ChatGPT-User
+Disallow: /
+
+User-agent: ClaudeBot
+Disallow: /
+
+User-agent: Claude-Web
+Disallow: /
+
+User-agent: anthropic-ai
+Disallow: /
+
+User-agent: Google-Extended
+Disallow: /
+
+User-agent: CCBot
+Disallow: /
+
+User-agent: PerplexityBot
+Disallow: /
+
+User-agent: Perplexity-User
+Disallow: /
+
+User-agent: Applebot-Extended
+Disallow: /
+
+User-agent: Bytespider
+Disallow: /
+
+User-agent: meta-externalagent
+Disallow: /
+
+User-agent: Meta-ExternalAgent
+Disallow: /
+
+User-agent: meta-externalfetcher
+Disallow: /
+
+User-agent: FacebookBot
+Disallow: /
+
+User-agent: Amazonbot
+Disallow: /
+
+User-agent: cohere-ai
+Disallow: /
+
+User-agent: cohere-training-data-crawler
+Disallow: /
+
+User-agent: Diffbot
+Disallow: /
+
+User-agent: omgili
+Disallow: /
+
+User-agent: omgilibot
+Disallow: /
+
+User-agent: ImagesiftBot
+Disallow: /
+
+User-agent: AI2Bot
+Disallow: /
+
+User-agent: Ai2Bot-Dolma
+Disallow: /
+
+User-agent: Timpibot
+Disallow: /
+
+User-agent: YouBot
+Disallow: /
+
+User-agent: Scrapy
+Disallow: /
+
+User-agent: SemrushBot-OCOB
+Disallow: /
+
+User-agent: PetalBot
+Disallow: /
+
+User-agent: DuckAssistBot
+Disallow: /
+
+User-agent: MistralAI-User
+Disallow: /
+
+# --- everything else: indexing permitted ----------------------------------
+# Googlebot, Bingbot, DuckDuckBot and the rest fall through to this.
+# Note: blocking Google-Extended above stops Gemini training WITHOUT
+# affecting Google Search ranking — they are separate user-agents.
+User-agent: *
+Allow: /
+
+Sitemap: https://guides.mixomics.org/sitemap.xml
