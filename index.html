@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>mixOmics — Documentation</title>
+<style>
+  :root { --slate:#232A34; --amber:#F5A623; --line:#E8EDF2; }
+  body { margin:0; background:var(--slate); color:var(--line);
+         font:16px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif; }
+  main { max-width:44rem; margin:0 auto; padding:4rem 1.5rem; }
+  h1 { font-weight:600; letter-spacing:-0.02em; margin:0 0 .25rem; }
+  h1 span { color:var(--amber); }
+  p.lede { color:#9AA7B8; margin:0 0 3rem; }
+  a.card { display:block; padding:1.25rem 1.5rem; margin-bottom:.75rem;
+           background:#1B222B; border:1px solid #2E3742; border-radius:8px;
+           text-decoration:none; color:inherit; transition:border-color .15s; }
+  a.card:hover { border-color:var(--amber); }
+  a.card strong { display:block; font-size:1.05rem; }
+  a.card span { color:#9AA7B8; font-size:.925rem; }
+  footer { margin-top:4rem; padding-top:1.5rem; border-top:1px solid #2E3742;
+           color:#6B7A8F; font-size:.875rem; }
+  footer a { color:#9AA7B8; }
+</style>
+</head>
+<body>
+<main>
+  <h1>mix<span>Omics</span> documentation</h1>
+  <p class="lede">Guides and reference material for the open-source mixOmics ecosystem.</p>
+
+  <a class="card" href="/mixOmics-Vignette/">
+    <strong>mixOmics Vignette</strong>
+    <span>Long-form guide to the methods, with worked examples.</span>
+  </a>
+
+  <footer>
+    <a href="https://mixomics.org">mixomics.org</a> ·
+    <a href="https://github.com/mixOmics-org">GitHub</a> ·
+    <a href="https://mixomics-users.discourse.group">Community forum</a><br>
+    Install: <code>BiocManager::install("mixOmics")</code>
+  </footer>
+</main>
+</body>
+</html>
