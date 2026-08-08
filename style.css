@@ -283,14 +283,14 @@ img, svg, video { display: block; max-width: 100%; height: auto; }
 
 .masthead__title {
   margin: 0 0 var(--sp-s);
-  font-size: var(--fs-display);
-  font-weight: var(--fw-bold);
+  font-size: var(--fs-page-title);
+  font-weight: var(--fw-regular);
   letter-spacing: var(--ls-tight);
   line-height: var(--lh-tight);
   text-wrap: balance;
 }
 
-.masthead__accent { color: var(--c-brand); }
+.masthead__accent { color: var(--c-brand); font-weight: var(--fw-semi);}
 
 .masthead__lede {
   max-width: var(--prose-tight);
