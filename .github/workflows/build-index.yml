@@ -1,0 +1,61 @@
+name: Build guides index
+
+# Regenerates the guides list on the landing page from repositories tagged with
+# the topic `mixomics-guide` that have Pages enabled.
+#
+# Triggers:
+#   schedule            — daily, catches new guides without anyone remembering
+#   workflow_dispatch   — run it by hand from the Actions tab
+#   repository_dispatch — a guide repo can notify this one on publish:
+#       gh api repos/mixOmics-org/mixomics-org.github.io/dispatches \
+#         -f event_type=guide-published
+
+on:
+  schedule:
+    - cron: "17 19 * * *"      # 05:17 AEST / 06:17 AEDT — after the working day
+  workflow_dispatch:
+  repository_dispatch:
+    types: [guide-published]
+  push:
+    paths:
+      - "scripts/build-index.py"
+      - "build-index.py"
+      - ".github/workflows/build-index.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: build-index
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Regenerate guides list
+        env:
+          # default GITHUB_TOKEN can read this org's public repos
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ORG: mixOmics-org
+          TOPIC: mixomics-guide
+        run: |
+          # tolerate the script living in the repo root or in scripts/
+          if   [ -f scripts/build-index.py ]; then python3 scripts/build-index.py
+          elif [ -f build-index.py ];         then python3 build-index.py
+          else echo "::error::build-index.py not found"; exit 1
+          fi
+
+      - name: Commit if changed
+        run: |
+          if git diff --quiet -- index.html sitemap.xml humans.txt; then
+            echo "No change."
+            exit 0
+          fi
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html sitemap.xml humans.txt
+          git commit -m "chore(index): regenerate guides list, sitemap and humans.txt"
+          git push
