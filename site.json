@@ -1,0 +1,45 @@
+{
+  "_comment": "Site-specific settings ONLY. The licence and the author list are NOT stored here — they are read at build time from the package repository, so this site cannot disagree with the package. See `source` below. Everything under `fallback` is used only if those reads fail.",
+
+  "site": {
+    "name": "mixOmics Guides",
+    "url": "https://guides.mixomics.org",
+    "locale": "en-AU"
+  },
+
+  "source": {
+    "package_repo": "mixOmics-org/mixOmics",
+    "_licence_from": "DESCRIPTION -> License: field. Authoritative for CRAN and Bioconductor, so relicencing the package updates this site with no edit here.",
+    "_people_from": "CITATION.cff -> authors. Already governs how the work is cited, so credit here cannot drift from credit in the literature."
+  },
+
+  "roles": [
+    {
+      "name": "Kim-Anh Lê Cao",
+      "role": "Creator and lead maintainer",
+      "since": "2009",
+      "orcid": "0000-0003-3923-1116",
+      "current": true
+    }
+  ],
+
+  "_roles_note": "CITATION.cff carries names and ORCIDs but has no role vocabulary. Entries here add role, since/until, and current/emeritus status, matched by exact name. A person in CITATION.cff with no entry here appears as 'Contributor'. Set `include_if_absent: true` for someone who should be credited but is not a package author — an infrastructure or site maintainer, say. Setting `current: false` moves them to a PREVIOUSLY section rather than deleting them; attribution should not vanish when someone leaves.",
+
+  "fallback": {
+    "_note": "Used only if the package repository cannot be read. Keep roughly current so a network failure does not publish something badly wrong.",
+    "licence": {
+      "spdx": "GPL-2.0-or-later",
+      "label": "GPL (>= 2)",
+      "url": "https://github.com/mixOmics-org/mixOmics/blob/master/LICENSE"
+    },
+    "licence_site_content": {
+      "spdx": "CC-BY-4.0",
+      "label": "CC BY 4.0",
+      "url": "https://creativecommons.org/licenses/by/4.0/"
+    },
+    "people": [
+      { "name": "Kim-Anh Lê Cao", "role": "Creator and lead maintainer", "since": "2009", "orcid": "0000-0003-3923-1116", "current": true }
+    ],
+    "acknowledgement": "mixOmics has been developed since 2009 by Kim-Anh Lê Cao, by developers engaged and trained through her research funding, and by contributors across the community. See CITATION.cff in the package repository for the full author list."
+  }
+}
