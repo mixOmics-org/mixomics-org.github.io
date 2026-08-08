@@ -3,42 +3,152 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>mixOmics — Documentation</title>
+<title>mixOmics Guides — documentation for the open-source mixOmics ecosystem</title>
+<meta name="description" content="Guides and reference material for mixOmics, open-source multivariate methods for the integration and exploration of omics data.">
+<link rel="canonical" href="https://guides.mixomics.org/">
+
+<!-- Social sharing -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="mixOmics Guides">
+<meta property="og:description" content="Documentation for the open-source mixOmics ecosystem.">
+<meta property="og:url" content="https://guides.mixomics.org/">
+<meta property="og:image" content="https://guides.mixomics.org/social-preview.png">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="icon" href="mixomics-favicon.svg" type="image/svg+xml">
+<link rel="alternate icon" href="mixomics-favicon.ico">
+
 <style>
-  :root { --slate:#232A34; --amber:#F5A623; --line:#E8EDF2; }
-  body { margin:0; background:var(--slate); color:var(--line);
-         font:16px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif; }
-  main { max-width:44rem; margin:0 auto; padding:4rem 1.5rem; }
-  h1 { font-weight:600; letter-spacing:-0.02em; margin:0 0 .25rem; }
-  h1 span { color:var(--amber); }
-  p.lede { color:#9AA7B8; margin:0 0 3rem; }
-  a.card { display:block; padding:1.25rem 1.5rem; margin-bottom:.75rem;
-           background:#1B222B; border:1px solid #2E3742; border-radius:8px;
-           text-decoration:none; color:inherit; transition:border-color .15s; }
-  a.card:hover { border-color:var(--amber); }
-  a.card strong { display:block; font-size:1.05rem; }
-  a.card span { color:#9AA7B8; font-size:.925rem; }
-  footer { margin-top:4rem; padding-top:1.5rem; border-top:1px solid #2E3742;
-           color:#6B7A8F; font-size:.875rem; }
-  footer a { color:#9AA7B8; }
+  :root {
+    --slate:  #232A34;
+    --panel:  #1B222B;
+    --border: #2E3742;
+    --amber:  #F5A623;
+    --text:   #E8EDF2;
+    --muted:  #9AA7B8;
+    --faint:  #6B7A8F;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--slate);
+    color: var(--text);
+    font: 16px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  main { max-width: 46rem; margin: 0 auto; padding: 4rem 1.5rem 5rem; }
+
+  .masthead { display: flex; align-items: center; gap: 1rem; margin-bottom: .5rem; }
+  .masthead img { width: 640px; height: 320px; flex: none; margin-bottom: 32px; }
+  h1 { font-size: 1.9rem; font-weight: 600; letter-spacing: -.02em; margin: 0; }
+  h1 .accent { color: var(--amber); }
+  p.lede { color: var(--muted); margin: 0 0 3rem; max-width: 34rem; }
+
+  h2 {
+    font-size: .8rem; font-weight: 600; text-transform: uppercase;
+    letter-spacing: .08em; color: var(--faint);
+    margin: 2.5rem 0 .875rem;
+  }
+
+  a.card {
+    display: block; padding: 1.25rem 1.5rem; margin-bottom: .75rem;
+    background: var(--panel); border: 1px solid var(--border); border-radius: 8px;
+    text-decoration: none; color: inherit;
+    transition: border-color .15s ease, transform .15s ease;
+  }
+  a.card:hover, a.card:focus-visible {
+    border-color: var(--amber); transform: translateY(-1px); outline: none;
+  }
+  a.card strong { display: block; font-size: 1.05rem; margin-bottom: .15rem; }
+  a.card span   { color: var(--muted); font-size: .925rem; }
+
+  .install {
+    background: var(--panel); border: 1px solid var(--border); border-radius: 8px;
+    padding: 1rem 1.25rem; font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: .9rem; color: var(--text); overflow-x: auto;
+  }
+  .install .comment { color: var(--faint); }
+
+  footer {
+    margin-top: 4rem; padding-top: 1.75rem;
+    border-top: 1px solid var(--border);
+    color: var(--faint); font-size: .875rem;
+  }
+  footer a { color: var(--muted); text-decoration: none; border-bottom: 1px solid transparent; }
+  footer a:hover { color: var(--amber); border-bottom-color: var(--amber); }
+  .links { display: flex; flex-wrap: wrap; gap: 1.25rem; margin-bottom: 1.5rem; }
+  .social { display: flex; gap: 1rem; align-items: center; margin-bottom: 1.5rem; }
+  .social a { display: inline-flex; color: var(--muted); border: none; }
+  .social a:hover { color: var(--amber); }
+  .social svg { width: 20px; height: 20px; fill: currentColor; }
+  .colophon { line-height: 1.7; max-width: 38rem; }
+
+  @media (max-width: 480px) {
+    main { padding: 2.5rem 1.25rem 3rem; }
+    .masthead img { width: 48px; height: 48px; }
+    h1 { font-size: 1.5rem; }
+  }
 </style>
 </head>
 <body>
 <main>
-  <h1>mix<span>Omics</span> documentation</h1>
-  <p class="lede">Guides and reference material for the open-source mixOmics ecosystem.</p>
+
+  <div class="masthead">
+    <div class="logo">
+      <img src="mixomics-logo.svg" alt="" width="640" height="360">
+    </div>
+    <h1>mix<span class="accent">Omics</span> Guides</h1>
+  </div>
+  <p class="lede">
+    Documentation and reference material for the open-source mixOmics ecosystem —
+    multivariate methods for the integration and exploration of omics data.
+  </p>
+
+  <h2>Guides</h2>
 
   <a class="card" href="/mixOmics-Vignette/">
     <strong>mixOmics Vignette</strong>
     <span>Long-form guide to the methods, with worked examples.</span>
   </a>
 
+  <!-- Add a card per published guide. The project repository publishes itself;
+       nothing else is needed here. -->
+
+  <h2>Install</h2>
+  <div class="install">
+<span class="comment"># from Bioconductor</span>
+if (!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+BiocManager::install("mixOmics")</div>
+
   <footer>
-    <a href="https://mixomics.org">mixomics.org</a> ·
-    <a href="https://github.com/mixOmics-org">GitHub</a> ·
-    <a href="https://mixomics-users.discourse.group">Community forum</a><br>
-    Install: <code>BiocManager::install("mixOmics")</code>
+    <div class="links">
+      <a href="https://mixomics.org" target="_blank" rel="noopener">mixomics.org</a>
+      <a href="https://github.com/mixOmics-org" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://mixomics-users.discourse.group" target="_blank" rel="noopener">Community forum</a>
+      <a href="https://bioconductor.org/packages/mixOmics/" target="_blank" rel="noopener">Bioconductor</a>
+      <a href="mailto:support@mixomics.org">support@mixomics.org</a>
+    </div>
+
+    <div class="social">
+      <a href="https://www.linkedin.com/company/mixomics" target="_blank" rel="noopener" aria-label="mixOmics on LinkedIn" title="LinkedIn">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05a3.74 3.74 0 0 1 3.37-1.85c3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zm1.78 13.02H3.55V9h3.57v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.72V1.72C24 .77 23.2 0 22.22 0z"/></svg>
+      </a>
+      <a href="https://www.facebook.com/mixOmics" target="_blank" rel="noopener" aria-label="mixOmics on Facebook" title="Facebook">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M24 12.07C24 5.4 18.63 0 12 0S0 5.4 0 12.07C0 18.1 4.39 23.1 10.13 24v-8.44H7.08v-3.49h3.05V9.41c0-3.02 1.79-4.69 4.53-4.69 1.31 0 2.68.24 2.68.24v2.97h-1.51c-1.49 0-1.96.93-1.96 1.89v2.25h3.33l-.53 3.49h-2.8V24C19.61 23.1 24 18.1 24 12.07z"/></svg>
+      </a>
+      <a href="https://github.com/mixOmics-org" target="_blank" rel="noopener" aria-label="mixOmics on GitHub" title="GitHub">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .3a12 12 0 0 0-3.79 23.4c.6.1.82-.26.82-.58v-2.23c-3.34.73-4.04-1.42-4.04-1.42-.55-1.39-1.34-1.76-1.34-1.76-1.09-.75.08-.73.08-.73 1.2.08 1.84 1.24 1.84 1.24 1.07 1.84 2.81 1.31 3.5 1 .1-.78.42-1.31.76-1.61-2.67-.3-5.47-1.34-5.47-5.94 0-1.31.47-2.38 1.24-3.22-.14-.3-.54-1.52.1-3.18 0 0 1-.32 3.3 1.23a11.5 11.5 0 0 1 6 0c2.28-1.55 3.29-1.23 3.29-1.23.65 1.66.24 2.88.12 3.18.77.84 1.23 1.91 1.23 3.22 0 4.61-2.8 5.63-5.48 5.93.43.37.81 1.1.81 2.22v3.29c0 .32.22.7.83.58A12 12 0 0 0 12 .3z"/></svg>
+      </a>
+    </div>
+
+    <p class="colophon">
+      mixOmics is free and open-source software, released under
+      <a href="https://github.com/mixOmics-org/mixOmics/blob/master/LICENSE" target="_blank" rel="noopener">GPL&nbsp;(&gt;=&nbsp;2)</a>,
+      and developed since 2009 by Professor Kim-Anh Lê Cao and colleagues.
+    </p>
   </footer>
+
 </main>
 </body>
 </html>
