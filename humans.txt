@@ -1,14 +1,18 @@
 /* TEAM */
-  Creator and maintainer: Kim-Anh Lê Cao
+  Creator and lead maintainer: Kim-Anh Lê Cao
   ORCID: 0000-0003-3923-1116
-  Site: https://mixomics.org
-  Location: Melbourne, Australia
+  Since: 2009
 
 /* SITE */
+  Site: https://guides.mixomics.org
   Standards: HTML5, CSS (container queries, custom properties), ES2020
-  Components: Montserrat
+  Components: Montserrat (SIL OFL 1.1), self-hosted
   Software: GitHub Pages
-  Licence: content CC BY 4.0; mixOmics package GPL (>= 2)
+  Site content: CC BY 4.0
+  mixOmics package: GPL (>= 2)
 
 /* THANKS */
-  To everyone who has contributed to mixOmics since 2009.
+  mixOmics has been developed since 2009 by Kim-Anh Lê Cao, by developers engaged and trained through her research funding, and by contributors across the community.
+  See CITATION.cff in the package repository for the full author list.
+
+/* GENERATED — edit site.json, not this file. */
