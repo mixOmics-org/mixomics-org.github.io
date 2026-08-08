@@ -1,3 +1,9 @@
+/*!
+ * SPDX-FileCopyrightText: 2026 mixOmics
+ * SPDX-License-Identifier: CC-BY-4.0
+ * Source: https://github.com/mixOmics-org/mixomics-org.github.io
+ */
+
 /* ============================================================================
    mixOmics Guides — guides.mixomics.org
    ============================================================================
@@ -59,7 +65,7 @@
   --fs-3:       clamp(1.728rem,  1.567rem  + 0.8041cqi,  1.953rem);
   --fs-4:       clamp(2.074rem,  1.846rem  + 1.139cqi,   2.393rem);
   --fs-display: clamp(1.625rem,  1.268rem  + 1.786cqi,   2.125rem);
-  --fs-page-title: clamp(2rem, 1.2857rem + 3.5714cqi, 3rem);
+  --fs-page-title: clamp(2rem, 1.286rem + 3.571cqi, 3rem);      /* 32→48 */
 
   /* --- space: segment A -------------------------------------------------- */
   --sp-3xs: clamp(0.25rem,   0.2277rem + 0.1116cqi, 0.2812rem);
@@ -121,9 +127,17 @@
   --scrollbar-thumb-hover: #FFB93E;
 }
 
-/* --- segment B: 768→1280. Redefining the same custom properties inside one
-   container query gives a second interpolation slope without any layout
-   living in a breakpoint. --------------------------------------------------- */
+/* --- segment B: 768→1280 --------------------------------------------------
+   A second interpolation slope, without any layout living in a breakpoint.
+
+   IMPORTANT — the selector must be a DESCENDANT of the container.
+   A @container rule styles only the container's descendants: the container
+   element itself and its ancestors can never match, because size containment
+   exists to prevent the circular dependency self-styling would create.
+   So `:root` (an ancestor) and `.page` (the container) are both invalid here
+   and the whole block silently does nothing. `.page > *` is the fix — the
+   redefined custom properties then inherit to everything inside.
+   -------------------------------------------------------------------------- */
 @container page (min-width: 48rem) {
   .page > * {
     --fs-n2:      clamp(0.708rem,  0.6901rem + 0.03738cqi, 0.72rem);
@@ -134,8 +148,8 @@
     --fs-3:       clamp(1.953rem,  1.587rem  + 0.7628cqi,  2.197rem);
     --fs-4:       clamp(2.393rem,  1.862rem  + 1.106cqi,   2.747rem);
     --fs-display: clamp(2.125rem,  1.188rem  + 1.953cqi,   2.75rem);
-    --fs-page-title: clamp(3rem, 1.5rem + 3.125cqi, 4rem);
-    
+    --fs-page-title: clamp(3rem, 1.5rem + 3.125cqi, 4rem);        /* 48→64 */
+
     --sp-3xs: clamp(0.2812rem, 0.2344rem + 0.09766cqi, 0.3125rem);
     --sp-2xs: clamp(0.5625rem, 0.4688rem + 0.1953cqi,  0.625rem);
     --sp-xs:  clamp(0.8125rem, 0.7188rem + 0.1953cqi,  0.875rem);
@@ -178,9 +192,16 @@ html {
 ::-webkit-scrollbar-thumb:hover { background: var(--scrollbar-thumb-hover); }
 ::-webkit-scrollbar-corner { background: var(--scrollbar-track); }
 
+/* Sticky footer. The chain of flex containers below lets .site-footer take
+   `margin-block-start: auto`, which consumes any leftover height and pins the
+   footer to the bottom of the viewport on a short page — the 404, or a guides
+   list with one card — without forcing 100svh on any single element. On a tall
+   page the auto margin resolves to zero and the layout is unaffected. */
 body {
   margin: 0;
-  min-height: 100svh;
+  min-block-size: 100svh;
+  display: flex;
+  flex-direction: column;
   background: var(--c-bg);
   color: var(--c-fg);
   font-family: var(--ff-sans);
@@ -211,14 +232,21 @@ img, svg, video { display: block; max-width: 100%; height: auto; }
   max-width: var(--measure);
   min-width: var(--measure-min);
   margin-inline: auto;
+  flex: 1;                       /* claim the leftover height from body */
+  display: flex;
+  flex-direction: column;
+  inline-size: 100%;
 }
 
 .page__main {
   padding-inline: clamp(1rem, 4cqi, var(--sp-2xl));
   padding-block: var(--sp-2xl) var(--sp-3xl);
+  flex: 1;                       /* and pass it down to the footer */
+  display: flex;
+  flex-direction: column;
 }
 
-.page__section { margin-block: var(--sp-xl); }
+.page__section { flex: none; margin-block: var(--sp-xl); }
 
 .page__eyebrow {
   margin: 0 0 var(--sp-s);
@@ -234,9 +262,18 @@ img, svg, video { display: block; max-width: 100%; height: auto; }
    ========================================================================== */
 
 .masthead {
+  flex: none;
   margin-bottom: var(--sp-2xl);
   text-align: center;
 }
+
+.masthead__home {
+  display: block;
+  border-radius: var(--radius);
+  text-decoration: none;
+}
+
+.masthead__home:focus-visible { outline-offset: var(--sp-2xs); }
 
 .masthead__logo {
   width: min(100%, clamp(18rem, 40cqi, var(--logo-max)));
@@ -246,14 +283,14 @@ img, svg, video { display: block; max-width: 100%; height: auto; }
 
 .masthead__title {
   margin: 0 0 var(--sp-s);
-  font-size: var(--fs-page-title);
-  font-weight: var(--fw-regular);
+  font-size: var(--fs-display);
+  font-weight: var(--fw-bold);
   letter-spacing: var(--ls-tight);
   line-height: var(--lh-tight);
   text-wrap: balance;
 }
 
-.masthead__accent { color: var(--c-brand); font-weight: var(--fw-medium);}
+.masthead__accent { color: var(--c-brand); }
 
 .masthead__lede {
   max-width: var(--prose-tight);
@@ -455,8 +492,10 @@ img, svg, video { display: block; max-width: 100%; height: auto; }
    ========================================================================== */
 
 .site-footer {
-  margin-top: var(--sp-2xl);
-  padding-top: var(--sp-m);
+  /* auto absorbs the leftover height; the preceding section's own
+     margin-block-end still guarantees a gap when the page is tall */
+  margin-block-start: auto;
+  padding-block-start: var(--sp-xl);
   border-top: var(--rule) solid var(--c-line);
   color: var(--c-fg-faint);
   font-size: var(--fs-n1);
@@ -482,10 +521,18 @@ img, svg, video { display: block; max-width: 100%; height: auto; }
   border-bottom-color: var(--c-brand);
 }
 
-/* No text-wrap:pretty and no &nbsp; in the markup — either one pins the line
-   break and makes it impossible to shift by resizing. */
+/* Three separate things pin a line break here, and all three must go:
+     1. `&nbsp;` in the markup — binds words into unbreakable units, so the
+        browser is forced to wrap earlier than the width requires. Removed.
+     2. `text-wrap: pretty` — reflows to avoid orphans, which reads as a
+        break that will not move. Removed.
+     3. `max-width` — wraps at the measure, not at the visible edge. With a
+        70ch cap in a 1280px column the text stops two-thirds across and
+        looks broken against the full-width blocks above.
+
+   The colophon is two lines of credit, not running prose, so it takes the
+   full column. --prose still governs anything genuinely long-form. */
 .site-footer__colophon {
-  max-width: var(--prose);
   margin: 0;
   line-height: var(--lh-loose);
 }
@@ -522,11 +569,14 @@ img, svg, video { display: block; max-width: 100%; height: auto; }
    10. BLOCK: error (404)
    ========================================================================== */
 
+/* A section within the shared page shell, not a standalone full-height view —
+   the masthead and footer are the same as index.html so a wrong URL still
+   looks like the site rather than a dead end. */
 .error {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  min-block-size: 100svh;
+  flex: none;
+  padding-block: var(--sp-xl);
+  border-block: var(--rule) solid var(--c-line);
+  margin-block: var(--sp-xl);
 }
 
 .error__title {
@@ -538,18 +588,71 @@ img, svg, video { display: block; max-width: 100%; height: auto; }
 }
 
 .error__note {
+  max-width: var(--prose);
   margin: 0 0 var(--sp-m);
   color: var(--c-fg-muted);
   font-size: var(--fs-0);
 }
 
-.error__back {
-  align-self: start;
-  padding-block: var(--sp-3xs);
-  border-bottom: var(--rule) solid currentColor;
-  color: var(--c-brand);
-  text-decoration: none;
+.error__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2xs);
 }
+
+/* ==========================================================================
+   BLOCK: button
+   ========================================================================== */
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2xs);
+  min-block-size: var(--tap);
+  padding-inline: var(--sp-m);
+  padding-block: var(--sp-2xs);
+  border: var(--rule-2) solid var(--c-line);
+  border-radius: var(--radius-sm);
+  background: var(--c-surface);
+  color: var(--c-fg-muted);
+  font-size: var(--fs-n1);
+  font-weight: var(--fw-semi);
+  text-decoration: none;
+  transition: color var(--dur-fast) ease,
+              background-color var(--dur-fast) ease,
+              border-color var(--dur-fast) ease,
+              transform var(--dur-fast) var(--ease);
+}
+
+.button:hover {
+  color: var(--c-fg);
+  background: var(--c-surface-2);
+  border-color: var(--c-fg-faint);
+}
+
+.button:active { transform: translateY(0.0625rem); }
+
+.button--primary {
+  background: var(--c-brand);
+  border-color: var(--c-brand);
+  color: var(--c-bg);
+}
+
+.button--primary:hover {
+  background: var(--scrollbar-thumb-hover);
+  border-color: var(--scrollbar-thumb-hover);
+  color: var(--c-bg);
+}
+
+.button__icon {
+  inline-size: 1.15em;
+  block-size: 1.15em;
+  flex: none;
+  transition: transform var(--dur) var(--ease);
+}
+
+/* the arrow leads the eye back — nudge it the way it points */
+.button:hover .button__icon { transform: translateX(-0.125rem); }
 
 /* ==========================================================================
    11. UTILITY
