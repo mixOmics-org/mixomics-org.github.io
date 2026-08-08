@@ -1,0 +1,48 @@
+# Normalise line endings. Without this, a Windows checkout rewrites every
+# file to CRLF and the next commit from macOS or Linux shows the whole file
+# as changed — the diff noise that makes review impossible.
+#
+# `text=auto` stores LF in the repository and converts on checkout per the
+# platform. Explicit entries below override it where the format demands one.
+
+* text=auto eol=lf
+
+# --- text, always LF -------------------------------------------------------
+*.html    text eol=lf
+*.css     text eol=lf
+*.js      text eol=lf
+*.json    text eol=lf
+*.md      text eol=lf
+*.txt     text eol=lf
+*.xml     text eol=lf
+*.yml     text eol=lf
+*.yaml    text eol=lf
+*.py      text eol=lf diff=python
+*.sh      text eol=lf
+*.R       text eol=lf
+*.Rmd     text eol=lf
+
+# --- binary: never touched, never diffed ----------------------------------
+*.woff2   binary
+*.woff    binary
+*.ttf     binary
+*.otf     binary
+*.png     binary
+*.jpg     binary
+*.jpeg    binary
+*.gif     binary
+*.webp    binary
+*.ico     binary
+*.pdf     binary
+*.zip     binary
+*.gz      binary
+
+# SVG is text, but treat it as binary for diffs — a one-character path change
+# produces an unreadable wall of coordinates otherwise.
+*.svg     text eol=lf -diff
+
+# --- exclude from release archives ----------------------------------------
+.github/       export-ignore
+scripts/       export-ignore
+.editorconfig  export-ignore
+.gitattributes export-ignore
