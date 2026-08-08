@@ -1,0 +1,14 @@
+/* TEAM */
+  Creator and maintainer: Kim-Anh Lê Cao
+  ORCID: 0000-0003-3923-1116
+  Site: https://mixomics.org
+  Location: Melbourne, Australia
+
+/* SITE */
+  Standards: HTML5, CSS (container queries, custom properties), ES2020
+  Components: Montserrat
+  Software: GitHub Pages
+  Licence: content CC BY 4.0; mixOmics package GPL (>= 2)
+
+/* THANKS */
+  To everyone who has contributed to mixOmics since 2009.
