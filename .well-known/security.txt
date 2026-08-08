@@ -1,0 +1,9 @@
+# https://guides.mixomics.org/.well-known/security.txt
+# RFC 9116. Update Expires at least annually — an expired file is ignored.
+
+Contact: https://github.com/mixOmics-org/mixOmics/security/advisories/new
+Contact: mailto:security@mixomics.org
+Expires: 2027-12-31T23:59:59.000Z
+Preferred-Languages: en
+Canonical: https://guides.mixomics.org/.well-known/security.txt
+Policy: https://github.com/mixOmics-org/.github/blob/main/SECURITY.md
